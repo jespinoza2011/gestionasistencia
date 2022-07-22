@@ -1,0 +1,135 @@
+<!--/* Thymeleaf templating engine, Each token will be replaced by their respective titles in the resulting page. */-->
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+<head>
+    <script>
+        $(document).ready(function () {
+        	 $('#timepicker1').datetimepicker({
+        	        "allowInputToggle": true,
+        	        "showClose": true,
+        	        "showClear": true,
+        	        "showTodayButton": true,
+        	        "format": "HH:mm:ss",
+        	    });
+        });
+    </script>
+    <title>Guardar</title>
+</head>
+<body>
+<div layout:fragment="breadcrumb">
+    <h1 th:text="'Gestion Marcacion'"></h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> <span th:text="#{Home.Title}"/></a></li>
+        <li class="active" th:text="Marcacion">Marcacion</li>
+    </ol>
+</div>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-md-12">
+            <form role="form" th:object="${marcacion}" method="post">
+                <div class="box box-primary">
+                    <div id="exTab1">
+                        <ul class="nav nav-pills">
+                            <li class="active">
+                                <a href="#1a" data-toggle="tab" th:text="Marcacion"></a>
+                            </li>
+                        </ul>
+                        <div class="box-body">
+                            <div class="tab-content">
+                                <input th:type="hidden" th:field="${marcacion.idMarcacion}"/>
+                                <div class="tab-pane active" id="1a">
+                                    <div class="form-row">                                        
+                                        <div class="form-group col-md-6">
+                                            <label for="inputPersonal" th:text="Personal"></label>
+                                            <select class="form-control select2-single habilitado"
+                                                   id="inputPersonal"
+                                                   th:field="${marcacion.empleado}">
+                                               <option th:each="empleado : ${allEmpleado}"
+                                                        th:value="${empleado.idEmpleado}"
+                                                        th:text="${empleado.nombres} + ' ' + ${empleado.apePaterno} + ' ' + ${empleado.apeMaterno}"/>
+                                            </select>                                            
+                                        </div>    
+                                        <div class="form-group col-md-4">
+                                            <label for="inputFechaMarcacion" th:text="'Fecha'"></label>&nbsp;<i
+                                                class="fa fa-calendar">
+                                        	</i>
+                                            <small class="form-text text-danger"
+                                                   th:if="${#fields.hasErrors('fechaMarcacion')}"
+                                                   th:errors="*{fechaMarcacion}"></small>
+                                            <input type="text" class="form-control"
+                                                   id="inputFechaMarcacion"
+                                                   th:field="${marcacion.fechaMarcacion}"
+                                                   name="inputFechaMarcacion"
+                                                   data-provide="datepicker"
+                                                   data-date-format="dd/mm/yyyy"
+                                                   data-date-language="es-PE"
+                                                   data-date-autoclose="true"
+                                                   data-date-today-highlight="true"
+                                                   data-date-end-date="0d"
+                                                   data-date-orientation="bottom"
+                                                   maxlength="10"/>
+                                        </div>
+                                        
+                                        <div class="form-group col-md-4">
+                                            <label for="inputHora" th:text="'Hora'"></label>&nbsp;<i
+                                                class="fa fa-clock-o">
+                                        	</i>
+                                            <small class="form-text text-danger"
+                                                   th:if="${#fields.hasErrors('HoraMarcacion')}"
+                                                   th:errors="*{horaMarcacion}"></small>
+                                            <div class="input-group bootstrap-timepicker timepicker">
+											  <input type="text" class="form-control input-small"
+											  		 id="timepicker1"
+											  		 th:field="${marcacion.horaMarcacion}"
+											  />
+											  <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+											</div>
+                                        </div>
+                                        
+                                        <div class="form-group col-md-2">
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputHora" th:text="'Hora Real'"></label>&nbsp;<i
+                                                class="fa fa-clock-o">
+                                            </i>
+                                            <small class="form-text text-danger"
+                                                   th:if="${#fields.hasErrors('HoraMarcacionReal')}"
+                                                   th:errors="*{HoraReal}"></small>
+                                            <input type="text" class="form-control"
+                                                   id="inputHora"
+                                                   th:field="${marcacion.horaMarcacionReal}"
+                                                   placeholder="Hora Real"
+                                                   maxlength="20"
+                                                   disabled=true>
+                                        </div>
+                                        
+                                         <input th:type="hidden"
+                                               th:field="${marcacion.idUsuarioCreacion}"
+                                               th:if="${marcacion.estado!=null}"/>
+                                         <input th:type="hidden"
+                                               th:field="${marcacion.fechaCreacion}"
+                                               th:if="${marcacion.fechaCreacion!=null}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box-footer with-border">
+                        <a th:href="@{/marcacion/list
+                        }" class="btn btn-default" role="button"
+                           title="Back list" th:text="Cancelar">
+                            <span aria-hidden="true"></span>
+                        </a>
+                        <button type="submit" class="box-title btn btn-primary"
+                                title="Save Data" th:text="Guardar">
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

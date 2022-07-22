@@ -1,0 +1,133 @@
+<!--/* Thymeleaf templating engine, Each token will be replaced by their respective titles in the resulting page. */-->
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+<head>
+    <title>Guardar</title>
+</head>
+<body>
+<div layout:fragment="breadcrumb">
+    <h1 th:text="'Gestion Permiso'"></h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> <span th:text="#{Home.Title}"/></a></li>
+        <li class="active" th:text="Permiso">Permiso</li>
+    </ol>
+</div>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-md-12">
+            <form role="form" th:object="${permiso}" method="post">
+                <div class="box box-primary">
+                    <div id="exTab1">
+                        <ul class="nav nav-pills">
+                            <li class="active">
+                                <a href="#1a" data-toggle="tab" th:text="Permiso"></a>
+                            </li>
+                        </ul>
+                        <div class="box-body">
+                            <div class="tab-content">
+                                <input th:type="hidden" th:field="${permiso.idPermiso}"/>
+                                <div class="tab-pane active" id="1a">
+                                    <div class="form-row">                                        
+                                        <div class="form-group col-md-4">
+                                            <label for="inputPersonal" th:text="Personal"></label>
+                                            <select class="form-control select2-single habilitado"
+                                                   id="inputPersonal"
+                                                   th:field="${permiso.empleado}">
+                                               <option th:each="empleado : ${allEmpleado}"
+                                                        th:value="${empleado.idEmpleado}"
+                                                        th:text="${empleado.nombres} + ' ' + ${empleado.apePaterno} + ' ' + ${empleado.apeMaterno}"/>
+                                            </select>                                            
+                                        </div>    
+                                        <div class="form-group col-md-4">
+                                            <label for="inputFechaInicio" th:text="'Fecha Inicio'"></label>&nbsp;<i
+                                                class="fa fa-calendar">
+                                        	</i>
+                                            <small class="form-text text-danger"
+                                                   th:if="${#fields.hasErrors('fechaInicio')}"
+                                                   th:errors="*{fechaInicio}"></small>
+                                            <input type="text" class="form-control"
+                                                   id="inputFechaInicio"
+                                                   th:field="${permiso.fechaInicio}"
+                                                   name="inputFechaInicio"
+                                                   data-provide="datepicker"
+                                                   data-date-format="dd/mm/yyyy"
+                                                   data-date-language="es-PE"
+                                                   data-date-autoclose="true"
+                                                   data-date-today-highlight="true"
+                                                   data-date-end-date="0d"
+                                                   data-date-orientation="bottom"
+                                                   maxlength="10"/>
+                                        </div>
+                                        
+                                        <div class="form-group col-md-4">
+                                            <label for="inputFechaFin" th:text="'Fecha Fin'"></label>&nbsp;<i
+                                                class="fa fa-calendar">
+                                        	</i>
+                                            <small class="form-text text-danger"
+                                                   th:if="${#fields.hasErrors('fechaFin')}"
+                                                   th:errors="*{fechaFin}"></small>
+                                            <input type="text" class="form-control"
+                                                   id="inputFechaFin"
+                                                   th:field="${permiso.fechaFin}"
+                                                   name="inputFechaFin"
+                                                   data-provide="datepicker"
+                                                   data-date-format="dd/mm/yyyy"
+                                                   data-date-language="es-PE"
+                                                   data-date-autoclose="true"
+                                                   data-date-today-highlight="true"
+                                                   data-date-end-date="0d"
+                                                   data-date-orientation="bottom"
+                                                   maxlength="10"/>
+                                        </div>
+
+                                        <div class="form-group col-md-4">
+                                            <label for="inputMotivo" th:text="Motivo"></label>
+                                            <select id="inputMotivo"
+                                                    class="form-control"
+                                                    th:field="${permiso.motivo}">
+											    <option th:each="maestra : ${allMotivos}" 
+											        th:value="${maestra.valor}" th:text="${maestra.descripcion}"></option>
+											</select>
+                                        </div>
+                                                                                          
+                                        <div class="form-group col-md-8">
+                                            <label for="inputObservacion" th:text="Observacion"></label>
+                                            <small class="form-text text-danger"
+                                                   th:if="${#fields.hasErrors('Observacion')}"
+                                                   th:errors="*{Observacion}"></small>
+                                            <input type="text" class="form-control"
+                                                   id="inputObservacion"
+                                                   th:field="${permiso.Observacion}"
+                                                   placeholder="Observacion"
+                                                   maxlength="500">
+                                        </div>
+                                        
+                                         <input th:type="hidden"
+                                               th:field="${permiso.idUsuarioCreacion}"
+                                               th:if="${permiso.estado!=null}"/>
+                                         <input th:type="hidden"
+                                               th:field="${permiso.fechaCreacion}"
+                                               th:if="${permiso.fechaCreacion!=null}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box-footer with-border">
+                        <a th:href="@{/permiso/list}" class="btn btn-default" role="button"
+                           title="Back list" th:text="Cancelar">
+                            <span aria-hidden="true"></span>
+                        </a>
+                        <button type="submit" class="box-title btn btn-primary"
+                                title="Save Data" th:text="Guardar">
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
