@@ -24,7 +24,6 @@ public class Application {
 		return new FixedLocaleResolver(new Locale("es", "PE"));
 	}
 
-
 	@Bean
 	public SpringDataDialect springDataDialect() {
 		return new SpringDataDialect();

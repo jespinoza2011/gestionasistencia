@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import pe.com.datatech.asistencia.dto.MenuItem;
 import pe.com.datatech.asistencia.entity.Usuario;
+import pe.com.datatech.asistencia.repository.ControlMarcacionRepository;
 import pe.com.datatech.asistencia.repository.MenuRepository;
 import pe.com.datatech.asistencia.util.Util;
 
@@ -25,6 +26,9 @@ public class ReportesController {
 
 	@Autowired
 	private MenuRepository menuRepository;
+	
+	@Autowired
+	private ControlMarcacionRepository controlMarcacionRepository;
 
 	@Autowired
 	private Util util;
@@ -39,7 +43,7 @@ public class ReportesController {
 			@RequestParam(name = "value", required = false) String value, Model model) {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		model.addAttribute("username", ((Usuario) principal).getUsuario());
-		return new ModelMap().addAttribute("reporte");
+		return new ModelMap().addAttribute("reporte", controlMarcacionRepository.findAll(pageable));
 	}
 
 	@ModelAttribute("menuItemsList")

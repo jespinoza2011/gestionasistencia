@@ -1,0 +1,177 @@
+<!--/* Thymeleaf templating engine, Each token will be replaced by their respective titles in the resulting page. */-->
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+<head>
+    <title>Guardar</title>
+    <script th:src="@{/js/Horario.js}"></script>
+</head>
+<body>
+<div layout:fragment="breadcrumb">
+    <h1 th:text="'Gestion Horario'"></h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> <span th:text="#{Home.Title}"/></a></li>
+        <li class="active" th:text="Horario">Horario</li>
+    </ol>
+</div>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-md-12">
+            <form role="form" th:object="${horario}" method="post">
+                <div class="box box-primary">
+                    <div id="exTab1">
+                        <ul class="nav nav-pills">
+                            <li class="active">
+                                <a href="#1a" data-toggle="tab" th:text="Horario"></a>
+                            </li>
+                        </ul>
+                        <div class="box-body">
+                            <div class="tab-content">
+                                <input th:type="hidden" th:field="${horario.idHorario}"/>
+                                <div class="tab-pane active" id="1a">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <label for="inputNombre" th:text="Nombre"></label>
+                                            <input type="text" class="form-control"
+                                                   id="inputNombre"
+                                                   th:field="${horario.NombreHorario}"
+                                                   placeholder="Nombre"
+                                                   maxlength="200">
+                                        </div>
+                                        
+                                        <div class="form-group col-md-4">
+                                            <label for="inputDescripcion" th:text="Descripcion"></label>
+                                            <input type="text" class="form-control"
+                                                   id="inputDescripcion"
+                                                   th:field="${horario.Descripcion}"
+                                                   placeholder="Descripcion"
+                                                   maxlength="200">
+                                        </div>
+                                        
+                                        <div class="form-group col-md-4">
+                                            <label for="inputTipoHorario" th:text="'Tipo Horario'"></label>
+                                            <select id="inputTipoHorario"
+                                                    class="form-control"
+                                                    th:field="${horario.IdTipoHorario}">
+											    <option th:each="maestra : ${allTipoHorario}" 
+											        th:value="${maestra.valor}" th:text="${maestra.descripcion}"></option>
+											</select>
+                                        </div>
+                                        
+                                        <div class="form-group-row" id="DivDias">
+	                                        <div class="col-md-12">
+	                                            <fieldset>
+		                                                <legend>Dias Laborables</legend>
+		                                                <div class="col-md-4">
+		                                                    <div class="form-check-input">
+		                                                        <input type="checkbox" id="chkLunes" value="Lunes">
+		                                                        <label for="chkLunes">Lunes </label>
+		                                                    </div>
+		                                                    <div class="form-check-input">
+		                                                        <input type="checkbox" id="chkMartes" value="Martes">
+		                                                        <label for="chkMartes">Martes </label>
+		                                                    </div>
+		                                                    <div class="form-check-input">
+		                                                        <input type="checkbox" id="chkMiercoles" value="Miercoles">
+		                                                        <label for="chkMiercoles">Miercoles </label>
+		                                                    </div>
+		                                                </div>
+		                                                <div class="col-md-4">
+		                                                    <div class="form-check-input">
+		                                                        <input type="checkbox" id="chkJueves" value="Jueves">
+		                                                        <label for="chkJueves">Jueves</label>
+		                                                    </div>
+		                                                    <div class="form-check-input">
+		                                                        <input type="checkbox" id="chkViernes" value="Viernes">
+		                                                        <label for="chkViernes">Viernes </label>
+		                                                    </div>
+		                                                    <div class="form-check-input">
+		                                                        <input type="checkbox" id="chkSabado" value="Sabado">
+		                                                        <label for="chkSabado">Sabado </label>
+		                                                    </div>
+		                                                </div>
+		                                                <div class="col-md-4">
+		                                                    <div class="form-check-input">
+		                                                        <input type="checkbox" id="chkDomingo" value="Domingo">
+		                                                        <label for="chkDomingo">Domingo</label>
+		                                                    </div>
+		                                                </div>
+	                                            </fieldset>
+	                                            <fieldset>
+	                                                <legend>Hora</legend>
+	                                                <div class="row">
+	                                                    <div class="form-group">	                                                    
+	                                                       <div class="form-group col-md-4">
+					                                            <label class="col-sm-2 control-label" th:text="Ingreso"></label>
+					                                            <input type="text" id="timeIngreso" name="timeIngreso" class="form-control">
+					                                        </div>
+	                                                        <div class="form-group col-md-4">
+	                                                            <label class="col-sm-2 control-label" th:text="Salida"></label>
+	                                                            <input type="text" id="timeSalida" name="timeSalida" class="form-control">
+	                                                        </div>
+	                                                        <div class="form-group col-md-2">
+	                                                        	<label class="col-sm-2 control-label" th:text="'Agregar'"></label>
+	                                                        	<button type="button" class="form-control btn btn-success fa fa-plus" id="addRow"></button>
+	                                                        </div>	                                                        
+	                                                    </div>
+	                                                </div>
+	                                            </fieldset>
+	                                            <div class="table-responsive">
+	                                                <table class="table table-striped table-hover" id="tbDetHorario">
+	                                                    <thead>
+	                                                        <tr>
+	                                                            <th>Item</th>
+	                                                            <th>Dia</th>
+	                                                            <th>Hora Inicio</th>
+	                                                            <th>Hora Fin</th>
+	                                                            <th>Eliminar</th>
+	                                                        </tr>
+	                                                    </thead>
+	                                                    <tbody>
+	                                                    	<tr th:if="${horario.detalles.empty}">
+													            <td colspan="5"> No hay detalles registrados</td>
+													        </tr>
+		                                                    <tr th:each="detalle, itemStat : *{horario.detalles}">	                                                    
+		                                                    	<td th:text="${detalle.nombreDia}"
+		                                                    		th:field="*{horario.detalles[__${itemStat.index}__].dia}"></td>
+		                                                    	<td th:text="${detalle.nombreDia}"
+		                                                    RW4A3Q		th:field="${detalle.nombreDia}"></td>
+		                                                    	<td th:text="${detalle.horaInicio}"
+		                                                    		th:field="${detalle.horaInicio}"></td>
+		                                                    	<td th:text="${detalle.horaFin}"
+		                                                    		th:field="${detalle.horaFin}"></td>
+	        													<td><a class="delete-row fa fa-trash fa-lg" href=""></a></td>
+	                                                    	</tr>
+	                                                    </tbody>
+	                                                </table>
+	                                            </div>
+	                                        </div>
+	                                     </div>
+                                         <input th:type="hidden"
+                                               th:field="${horario.idUsuarioCreacion}"
+                                               th:if="${horario.estado!=null}"/>
+                                         <input th:type="hidden"
+                                               th:field="${horario.fechaCreacion}"
+                                               th:if="${horario.fechaCreacion!=null}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box-footer with-border">
+                        <a th:href="@{/horario/list}" class="btn btn-default" role="button"
+                           title="Back list" th:text="Cancelar">
+                            <span aria-hidden="true"></span>
+                        </a>
+                        <button type="submit" class="box-title btn btn-primary"
+                                title="Save Data" th:text="Guardar">
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
